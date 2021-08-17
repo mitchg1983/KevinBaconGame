@@ -1,0 +1,21 @@
+.search-box {
+height: 100px;
+width: 300px;
+background-color: lightblue;
+display: flex;
+align-items: center;
+}
+
+.output-box {
+    height: 300px;
+    width: 500px;
+    background-color: darkblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: larger;
+}
+
+.portrait {
+    height: 200px;
+}
