@@ -16,14 +16,14 @@
 
 const baseURL = "https://api.themoviedb.org/3/";
 
-const APIKEY = config.API_TOKEN;
+const APIKEY = apiconfig.API_TOKEN;
 
 
 
 
-const config = "https://api.themoviedb.org/3/configuration?api_key=944bb56ef0798c430cff54fa23c6b6cf";
+const config = "https://api.themoviedb.org/3/configuration?api_key=" + APIKEY;
 
-const search = "https://api.themoviedb.org/3/search/movie?api_key=944bb56ef0798c430cff54fa23c6b6cf&query=";
+const search = "https://api.themoviedb.org/3/search/movie?api_key=" + APIKEY + "&query=";
 
 const person = "https://api.themoviedb.org/3/search/person/";
 
@@ -64,9 +64,11 @@ async function digUpPerson (keyword) {
         console.log("fetching data on", keyword);
 
         const rawData = await fetch(
-            "https://api.themoviedb.org/3/search/person?api_key=944bb56ef0798c430cff54fa23c6b6cf&language=en-US&query=" +
-            decodeURI(keyword) +
-            "&page=1&include_adult=false"
+            "https://api.themoviedb.org/3/search/person?api_key="
+            + APIKEY
+            + "&language=en-US&query="
+            + decodeURI(keyword)
+            +"&page=1&include_adult=false"
              );
 
         const data = await rawData.json();
