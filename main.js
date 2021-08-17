@@ -16,7 +16,7 @@
 
 const baseURL = "https://api.themoviedb.org/3/";
 
-const APIKEY = "944bb56ef0798c430cff54fa23c6b6cf";
+const APIKEY = config.API_TOKEN;
 
 
 
