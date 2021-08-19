@@ -1,17 +1,3 @@
-/*************
-SAMPLE URLS
-
-1. To get the config data like image base urls
-https://api.themoviedb.org/3/configuration?api_key=<APIKEY>
-
-2. To fetch a list of movies based on a keyword
-https://api.themoviedb.org/3/search/movie?api_key=<APIKEY>&query=<keyword>
-
-3. To fetch more details about a movie
-https://api.themoviedb.org/3/movie/<movie-id>?api_key=<APIKEY>
-*************/
-//const APIKEY is inside key.js
-
 const baseURL = "https://api.themoviedb.org/3/";
 
 const APIKEY = apiconfig.API_TOKEN;
@@ -23,37 +9,42 @@ const search =
 
 const person = "https://api.themoviedb.org/3/search/person/";
 
-async function talk() {
-  console.log("fetching config");
+let cleanCreditsList = [];
 
-  const rawData = await fetch(config);
-  const data = await rawData.json();
 
-  console.log("config data", data);
-  return data;
-}
 
-talk();
 
-async function digUp(keyword) {
-  console.log("fetching search for", keyword);
+// async function talk() {
+//   //   console.log("fetching config");
 
-  const rawData = await fetch(search + decodeURI(keyword));
-  const data = await rawData.json();
+//   const rawData = await fetch(config);
+//   const data = await rawData.json();
 
-  console.log(data);
-  console.log("Results of data:", data.results);
-  console.log("First returned result is - ", data.results[0]);
+//   //   console.log("config data", data);
+//   return data;
+// }
 
-  const movieId = data.results[0].id;
+// talk();
 
-  movieCredits(movieId);
+// async function digUp(keyword) {
+//   //   console.log("fetching search for", keyword);
 
-  return data;
-}
+//   const rawData = await fetch(search + decodeURI(keyword));
+//   const data = await rawData.json();
+
+//   //   console.log(data);
+//   //   console.log("Results of data:", data.results);
+//   //   console.log("First returned result is - ", data.results[0]);
+
+//   const movieId = data.results[0].id;
+
+//   movieCredits(movieId);
+
+//   return data;
+// }
 
 async function movieCredits(keyword) {
-  console.log("finding movie credits on ID#", keyword);
+  //   console.log("finding movie credits on ID#", keyword);
 
   const rawData = await fetch(
     "https://api.themoviedb.org/3/movie/" +
@@ -65,15 +56,17 @@ async function movieCredits(keyword) {
 
   const movieCreditsData = await rawData.json();
 
-  console.log(movieCreditsData);
+  //   console.log(movieCreditsData);
 
-  console.log("credit_id is...", movieCreditsData.cast[0].credit_id);
+  //   console.log("credit_id is...", movieCreditsData.cast[0].credit_id);
 
   checkCreditId(movieCreditsData.cast[0].credit_id);
 }
 
+
+
 async function checkCreditId(keyword) {
-  console.log("finding movie credit data on ID#", keyword);
+  //   console.log("finding movie credit data on ID#", keyword);
 
   const rawData = await fetch(
     "https://api.themoviedb.org/3/credit/" + keyword + "?api_key=" + APIKEY
@@ -81,70 +74,70 @@ async function checkCreditId(keyword) {
 
   const whatCreditIsThis = await rawData.json();
 
-  console.log("credit_id#", keyword, "is listed as:", whatCreditIsThis);
+  //   console.log("credit_id#", keyword, "is listed as:", whatCreditIsThis);
 }
 
-async function digUpPerson(keyword) {
-  console.log("fetching data on", keyword);
 
-  const rawData = await fetch(
-    "https://api.themoviedb.org/3/search/person?api_key=" +
-      APIKEY +
-      "&language=en-US&query=" +
-      decodeURI(keyword) +
-      "&page=1&include_adult=false"
-  );
 
-  const data = await rawData.json();
+// async function digUpPerson(keyword) {
+//   //   console.log("fetching data on", keyword);
 
-  console.log(data);
-  console.log("Results of data:", data.results);
-  console.log("First returned result is - ", data.results[0]);
-  console.log("First returned result, 'id' is", data.results[0].id);
+//   const rawData = await fetch(
+//     "https://api.themoviedb.org/3/search/person?api_key=" +
+//       APIKEY +
+//       "&language=en-US&query=" +
+//       decodeURI(keyword) +
+//       "&page=1&include_adult=false"
+//   );
 
-  $(".output-box").text(data.results[0]);
+//   const data = await rawData.json();
 
-  const picAddress = data.results[0].profile_path;
+//   //   console.log(data);
+//   //   console.log("Results of data:", data.results);
+//   //   console.log("First returned result is - ", data.results[0]);
+//   //   console.log("First returned result, 'id' is", data.results[0].id);
 
-  const portrait =
-    "<img src='http://image.tmdb.org/t/p/w185" + picAddress + "'>";
+//   $(".output-box").text(data.results[0]);
 
-  console.log(portrait);
+//   const picAddress = data.results[0].profile_path;
 
-  $(".output-box").append(portrait);
+//   const portrait =
+//     "<img src='http://image.tmdb.org/t/p/w185" + picAddress + "'>";
 
-  return data;
-}
+//   //   console.log(portrait);
 
-//
-//
-async function finder(keyword) {
-  //
-  //
-  console.log("finding data on", keyword);
+//   $(".output-box").append(portrait);
 
-  const rawData = await fetch(
-    "https://api.themoviedb.org/3/search/person?api_key=" +
-      APIKEY +
-      "&language=en-US&query=" +
-      decodeURI(keyword) +
-      "&page=1&include_adult=false"
-  );
+//   return data;
+// }
 
-  const data = await rawData.json();
 
-  console.log(data);
+// async function finder(keyword) {
 
-  //
-  //
-  const actorId = data.results[0].id;
+//   //   console.log("finding data on", keyword);
 
-  console.log("fetching actor by id#", actorId);
+//   const rawData = await fetch(
+//     "https://api.themoviedb.org/3/search/person?api_key=" +
+//       APIKEY +
+//       "&language=en-US&query=" +
+//       decodeURI(keyword) +
+//       "&page=1&include_adult=false"
+//   );
 
-  actorById(actorId);
+//   const data = await rawData.json();
 
-  return data;
-}
+//   //   console.log(data);
+
+//   //
+//   //
+//   const actorId = data.results[0].id;
+
+//   //   console.log("fetching actor by id#", actorId);
+
+//   actorById(actorId);
+
+//   return data;
+// }
 
 async function actorById(actorId) {
   const actor = await fetch(
@@ -157,8 +150,8 @@ async function actorById(actorId) {
 
   const actorData = await actor.json();
 
-  console.log("See below for actor data");
-  console.log(actorData);
+  //   console.log("See below for actor data");
+  //   console.log(actorData);
 }
 
 //
@@ -166,30 +159,38 @@ async function actorById(actorId) {
 
 $(".submit-button").on("click", () => {
   let userGuess = $(".text-box").val();
-  console.log("The user has entered", userGuess);
+  //   console.log("The user has entered", userGuess);
   digUp(userGuess);
 });
 
 $(".submit-button-actor").on("click", () => {
   let userGuess = $(".text-box-person").val();
-  console.log("The user has entered", userGuess);
+  //   console.log("The user has entered", userGuess);
 
   let returnData = digUpPerson(userGuess);
 
-  console.log("inside actor event listener,", returnData);
+  //   console.log("inside actor event listener,", returnData);
 });
 
 $(".submit-button-finder").on("click", () => {
   let userGuess = $(".text-box-finder").val();
-  console.log("The user has entered", userGuess);
+  //   console.log("The user has entered", userGuess);
 
   let returnData = finder(userGuess);
 
-  console.log("inside finder event listener,", returnData);
+  //   console.log("inside finder event listener,", returnData);
 });
 
+
+let baconList = "";
+
+let knownToBacon = [];
+
+
+
 async function getAllActingCredits(actor) {
-  console.log("Searching TMDB for: ", actor);
+
+  //   console.log("Searching TMDB for: ", actor);
 
   const rawSearchForActorByName = await fetch(
     "https://api.themoviedb.org/3/search/person?api_key=" +
@@ -201,21 +202,21 @@ async function getAllActingCredits(actor) {
 
   const searchForActorByName = await rawSearchForActorByName.json();
 
-  console.log("Received the following data:", searchForActorByName);
-
-  console.log("First result is:", searchForActorByName.results[0]);
+  //   console.log("Received the following data:", searchForActorByName);
+  //   console.log("First result is:", searchForActorByName.results[0]);
 
   const firstId = searchForActorByName.results[0].id;
 
-  console.log("First result id# is:", firstId);
+  //   console.log("First result id# is:", firstId);
 
   getAllActingCreditsB(firstId, actor);
+
 }
 
-let baconList = "";
+
 
 async function getAllActingCreditsB(firstId, actor) {
-  console.log("Retrieving data on actor:", actor, "with id#:", firstId);
+  //   console.log("Retrieving data on actor:", actor, "with id#:", firstId);
 
   const rawActingCredits = await fetch(
     "https://api.themoviedb.org/3/person/" +
@@ -227,54 +228,136 @@ async function getAllActingCreditsB(firstId, actor) {
 
   const actingCredits = await rawActingCredits.json();
 
-  console.log("Received the following data:", actingCredits);
-
-  console.log(actor, "all credits:", actingCredits.movie_credits.cast);
+  //   console.log("Received the following data:", actingCredits);
+  //   console.log(actor, "all credits:", actingCredits.movie_credits.cast);
 
   baconList = actingCredits.movie_credits.cast;
 
-  console.log("baconList is:", baconList);
+  //   console.log("baconList is:", baconList);
 
-  cleanCredits(baconList);
+
+
+  cleanCredits(baconList)
+
 }
 
-getAllActingCredits("Kevin Bacon");
 
-let cleanCreditList = [];
+//   const cleanBacon = await cleanCredits(baconList);
 
-function cleanCredits(creditsArray) {
-  let rawCreditList = [];
 
-  for (const creditObj of creditsArray) {
-    // console.log("This credit is:", credit);
-    //
-    //
-    //here is what we do. we have a list of all the credits.
-    //we want to iterate through all credits, BEFORE, adding to official list.
-    //filter out all music, documentaries and anything else not applicable. We will hopefully have a list
-    //of movies that he has only acted in.
-    //
-    //From there, find every ector he has every worked with. add it to an array called 1st relation.
-    //Do this until we have a list, 6 deep, of potentially every single person who is a possible match
-    //for the game.
-    //we can use this as a filter, so players cannot enter names? maybe an option.
 
-    rawCreditList.push(creditObj);
+
+
+async function baconFunc1(id) {
+    // console.log("finding movie credits on ID#", id);
+
+    const rawData = await fetch(
+      "https://api.themoviedb.org/3/movie/" +
+        id +
+        "/credits?api_key=" +
+        APIKEY +
+        "&language=en"
+    );
+
+    const movieCreditsData = await rawData.json();
+
+    // console.log(movieCreditsData.cast);
+
+    const castList = movieCreditsData.cast;
+
+    makeKnownList(castList);
+
   }
 
-  console.log(rawCreditList);
+
+function makeKnownList (castList) {
+
+    for (const castMember of castList) {
+    // console.log("scrubbing for", castMember)
+
+    const name = castMember.name;
+
+    // console.log(name);
+
+    if (name === "Kevin Bacon") {
+      // console.log("filtering out", name)
+      continue;
+    } else if (knownToBacon.includes(name)) {
+      // console.log("filtering out", name)
+      continue;
+    } else {
+      // console.log(name, "looks good");
+      knownToBacon.push(name);
+    }
+  }
+
 }
 
+
+//look through an array of actor's credits
+//returns an array of those credits, with certain genres removed
+function cleanCredits(creditsArray) {
+
+  for (const credit of creditsArray) {
+
+    const genreList = credit.genre_ids;
+    
+    //remove all genre_ids, from the genreList, that are linked to movies on our exclude list
+    const filteredList = genreList.filter(checkGenres);
+
+    //if any genre_ids remain, for an idividual credit, send it's title & id to a new array
+    if (filteredList.length > 0) {
+      cleanCreditsList.push(credit.title);
+      cleanCreditsList.push(credit.id);
+    }
+  }
+
+    for (let i = 0; i <= cleanCreditsList.length; i++) {
+    
+        //should use objects here
+        if (i % 2 !== 0) {
+          baconFunc1(cleanCreditsList[i]);
+        }
+
+        console.log(cleanCreditsList.length);
+
+        if (i === cleanCreditsList.length) {
+            console.log(knownToBacon.length);
+        }
+      }
+    
+    }
+    
+
+  
+
+
+
+
+//looks through an array of genre_ids, and returns false if the movie fits one of the 'if' statements
 function checkGenres(genre) {
+
+  // console.log("checkGenres function begins");
+  // console.log(genre);
+
+  //documentary
   if (genre === 99) {
     return false;
   }
 
+  //tv_movie
   if (genre === 10770) {
     return false;
   }
 
+  //music
   if (genre === 10402) {
     return false;
   }
-}
+
+  return true;
+
+};
+
+getAllActingCredits("Kevin Bacon");
+
