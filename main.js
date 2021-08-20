@@ -18,11 +18,11 @@ $(".submit-button").on("click", () => {
 ////////////////////////////////////////////////////////////////////////////////
 $(".submit-button-actor").on("click", () => {
   let userGuess = $(".text-box-person").val();
-  //   console.log("The user has entered", userGuess);
 
-  let returnData = digUpPerson(userGuess);
+  console.log("Checking if", userGuess, "has ever worked with Kevin Bacon");
 
-  //   console.log("inside actor event listener,", returnData);
+  baconBoo(userGuess);
+
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -355,7 +355,7 @@ async function workedWithBacon(name) {
 
   }
     console.log("We have completed the search on", actorPrime.name);
-    return false
+    return firstConnections
   }
 
 
@@ -366,10 +366,26 @@ async function baconBoo (actorName) {
 
   const baconFriend = await workedWithBacon(actorName);
 
-  console.log(baconFriend);
+  if (baconFriend === true) {
+    return console.log("we got true")
+  } else {
+    // console.log("we got false")
+    // console.log(baconFriend);
 
-  return(baconFriend);
 
+
+      for (const actorName of baconFriend) {
+      console.log(actorName)
+      const secondConnections = await workedWithBacon(actorName);
+      if (secondConnections === true) {
+        return console.log("we got true")
+      } else {continue}
+
+      }
+
+      console.log("Still nothing");
+
+
+  } 
 }
 
-baconBoo("Vin Diesel");
