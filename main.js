@@ -164,17 +164,11 @@ async function getActorByName(actorName) {
 ////////////////////////////////////////////////////////////////////////////////
 async function getActingCredits(actor) {
   const rawActingCredits = await fetch(
-
-
     "https://api.themoviedb.org/3/person/" +
       actor.id +
       "/movie_credits?api_key=" +
       APIKEY +
       "&language=en-US"
-
-
-
-      
   );
 
   const actingCredits = await rawActingCredits.json();
@@ -249,6 +243,8 @@ async function cleanCredits(creditsArray) {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 async function scrubCredits(creditsArray) {
+  // console.log(creditsArray);
+  let cleanCreditsList = [];
   for (const credit of creditsArray) {
     const genreList = credit.genre_ids;
 
@@ -264,9 +260,6 @@ async function scrubCredits(creditsArray) {
   return cleanCreditsList;
 }
 
-// for (const credit of cleanCreditsList) {
-//   baconFunc1(credit.id);
-// }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -295,124 +288,88 @@ function checkGenres(genre) {
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+async function getCreditById(actor) {
+  // console.log(actor);
 
-// getAllActingCredits("Kevin Bacon");
+  const rawCreditDetails = await fetch(
+    `https://api.themoviedb.org/3/credit/${actor.credit_id}?api_key=${APIKEY}&language=en-US`
+  );
 
-let loops = 0;
+  const creditDetails = await rawCreditDetails.json();
 
-async function getStepsToBacon(name) {
-  loops++;
-  //get the details on the submitted actor
+  // console.log(creditDetails);
+
+  return creditDetails;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+async function workedWithBacon(name) {
+
   const actorPrime = await getActorByName(name);
-
-  console.log(actorPrime);
 
   const actorCredits = await getActingCredits(actorPrime);
 
-
-
-
-
-
-
-
-
-
-  // console.log(actorDetails);
-
-  //get all of this actor's credits
-
-
-  // console.log(actorCredits);
-
-  //remove any credits that are not acting
   const scrubbedCredits = await scrubCredits(actorCredits.cast);
 
-  //each element of the array degreeOne, is an array of the actors in each credit for
-  //the current actor.
-  //
-  //degreeOne is a list of every actor, in every movie, that has ~Vin Disel~ in it.
-  //this list includes ~Vin Diesel~ himself!
-  let degreeOne = [];
+  let firstConnections = [];
 
-  console.log(degreeOne);
-
-  //for all of the remaining movies, get the castlist for those movies
   for (const credit of scrubbedCredits) {
+    // console.log(credit);
+
     const movieCharacterList = await getMovieCredits(credit.id);
-
-    let characterList = [];
-
     // console.log(movieCharacterList);
+    let characterList = [];
 
     //find the details of every character in the movie, add it to an array
     for (const character of movieCharacterList) {
-      // console.log(actor, movieCharacterList)
-      // let name = actor.name;
-      // console.log(character);
 
-      if (character.name === actorPrime.name) {
-        console.log("We found one!")
-        console.log("name", character.name)
-        console.log("prime", actorPrime.name)
-        continue
-      } else {characterList.push(character)}
-    }
-    // console.log(credit.title, characterList);
-    degreeOne.push(characterList);
-  }
+      // console.log("We have the character", character, "  - we have their name as", character.name);
 
-  //actorArray is an array, where each element is an object containing the
-  //details of that particular character in that movie
-  for (const actorArray of degreeOne) {
-
-    // console.log(actorArray);
-
-    for (actor of actorArray) {
-
-      if (actor.name === "Kevin Bacon") {
-
-        // console.log(actor);
-        // console.log(actor.id);
-
-        const creditDetails = await getCreditById(actor);
-
-        console.log(creditDetails);
-
-        console.log("Numer of loops:", loops)
-
-        return console.log("Lookee here", actor);
+      if (character.name === "Kevin Bacon") {
+         (console.log("Got him!", character))
+         return true
       }
 
-      console.log("continuing search");
+      if (character.name === actorPrime.name) {
+        // console.log("found the actor themselves")
+        continue;
+      }
+
+      if (characterList.includes(character.name)) {
+        // console.log("found a repeat")
+        continue;
+      } 
+  
+      else {
+        // console.log("this one is clear", character.name);
+        characterList.push(character.name);
+      }
 
     }
 
+          for (const actorName of characterList) {
+            firstConnections.push(actorName);
+          }
+          // console.log(firstConnections);
+
+  }
+    console.log("We have completed the search on", actorPrime.name);
+    return false
   }
 
-  //if we have searched through every actorArray, and not found Kevin Bacon...
-getStepsToBacon
 
+
+
+
+async function baconBoo (actorName) {
+
+  const baconFriend = await workedWithBacon(actorName);
+
+  console.log(baconFriend);
+
+  return(baconFriend);
 
 }
 
-async function getCreditById (actor) {
-
-  // console.log(actor);
-
-    const rawCreditDetails = await fetch(
-      `https://api.themoviedb.org/3/credit/${actor.credit_id}?api_key=${APIKEY}&language=en-US`
-    );
-  
-    const creditDetails = await rawCreditDetails.json();
-    
-    // console.log(creditDetails);
-
-    return creditDetails
-
-  }
-
-
-
-getStepsToBacon("Vin Diesel");
-
+baconBoo("Vin Diesel");
