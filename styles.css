@@ -161,7 +161,20 @@ body {
     left: 35px;
 }
 
-.landing-point {
+/* .landing-point {
     height: 90px;
+    width: 90px;
+} */
+
+.bacon {
+    height: 25px;
+    width: 25%;
+    border: red dotted 2px;
+    position: absolute;
+    bottom: 0px;
+    left: 60px;
+}
+
+.actor-image {
     width: 90px;
 }

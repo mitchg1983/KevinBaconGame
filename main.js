@@ -6,7 +6,7 @@ let baconList = "";
 
 let knownToBacon = [];
 
-{
+
   // ////////////////////////////////////////////////////////////////////////////////
   // ////////////////////////////////////////////////////////////////////////////////
   // $(".submit-button").on("click", () => {
@@ -44,6 +44,57 @@ let knownToBacon = [];
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
   //takes in a castlist
+
+
+// const submitGuess = async function entryGuess(actor) {
+
+//   console.log("submit guess");
+
+//   console.log(actor);
+
+// }
+
+// $(".entry-button").on("click", submitGuess($(".entry-box").val()))
+
+// $(".entry-button").on("click", () => {
+//   console.log("entry button");
+
+//   let entry = $(".entry-box").val();
+
+//   console.log(entry);
+// })
+
+  $(".entry-button").on("click", async function () {
+    let userGuess = $(".text-box").val();
+    console.log("The user has entered", userGuess);
+    let actor = await getActorByName(userGuess);
+    console.log(actor);
+    return getImagesById(actor);
+  });
+
+
+
+
+
+
+async function getImagesById (actor) {
+
+  const rawImageResults = await fetch (
+  `https://api.themoviedb.org/3/person/${actor.id}/images?api_key=${APIKEY}`
+  );
+  
+  const imageResults = await rawImageResults.json();
+
+  console.log(imageResults.profiles[0]);
+
+  let imagePath = decodeURI(imageResults.profiles[0].file_path);
+
+  let imageSrc = `https://image.tmdb.org/t/p/w185${imagePath}`;
+
+  $(".aa").append(
+    `<img src="${imageSrc}" class="actor-image">`
+  );
+
 }
 
 
