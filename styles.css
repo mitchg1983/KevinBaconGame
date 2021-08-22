@@ -167,12 +167,10 @@ body {
 } */
 
 .bacon {
-    height: 25px;
-    width: 25%;
-    border: red dotted 2px;
+    height: 100px;
     position: absolute;
     bottom: 0px;
-    left: 60px;
+    left: 45px;
 }
 
 .actor-image {
