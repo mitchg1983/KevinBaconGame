@@ -43,6 +43,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 
 }
 
@@ -55,7 +56,7 @@ body {
 .game-circle {
     height: 500px;
     width: 500px;
-    border: red solid 1px;
+    /* border: red solid 1px; */
     border-radius: 50%;
     display: flex;
     flex-direction: column;
@@ -71,7 +72,7 @@ body {
 
 
 .aA {
-    border: solid yellow 1px;
+    /* border: solid yellow 1px; */
     width: 33%;
     height: 100%;
     position: relative;
@@ -79,7 +80,7 @@ body {
 
 
 .bB {
-    border: solid rgb(0, 255, 0) 1px;
+    /* border: solid rgb(0, 255, 0) 1px; */
     width: 33%;
     height: 100%;
     position: relative;
@@ -105,7 +106,7 @@ body {
 .aa {
     height: auto;
     width: auto;
-    border: solid white 1px;
+    /* border: solid white 1px; */
     position: absolute;
     top: 35px;
     left: 35px;
@@ -115,7 +116,7 @@ body {
 .ab {
     height: auto;
     width: auto;
-    border: solid rgb(169, 255, 99) 1px;
+    /* border: solid rgb(169, 255, 99) 1px; */
     position: absolute;
     top: 0px;
     left: 37px;
@@ -125,7 +126,7 @@ body {
 .ac {
     height: auto;
     width: auto;
-    border: solid rgb(98, 179, 255) 1px;
+    /* border: solid rgb(98, 179, 255) 1px; */
     position: absolute;
     top: 35px;
     right: 35px;
@@ -135,7 +136,7 @@ body {
 .ba {
     height: auto;
     width: auto;
-    border: solid rgb(209, 111, 255) 1px;
+    /* border: solid rgb(209, 111, 255) 1px; */
     position: absolute;
     bottom: 35px;
     left: 35px;
@@ -145,7 +146,7 @@ body {
 .bb {
     height: auto;
     width: auto;
-    border: solid rgb(255, 0, 0) 1px;
+    /* border: solid rgb(255, 0, 0) 1px; */
     position: absolute;
     bottom: 0px;
     left: 37px;
@@ -155,7 +156,7 @@ body {
 .bc {
     height: auto;
     width: auto;
-    border: solid rgb(255, 230, 0) 1px;
+    /* border: solid rgb(255, 230, 0) 1px; */
     position: absolute;
     bottom: 35px;
     left: 35px;
@@ -175,4 +176,8 @@ body {
 
 .actor-image {
     width: 90px;
+}
+
+.entry-box {
+    margin-top: 50px;
 }

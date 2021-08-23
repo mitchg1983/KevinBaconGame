@@ -12,6 +12,23 @@ $(".entry-button").on("click", async function () {
   count++;
   let userGuess = $(".text-box").val();
   console.log("The user has entered", userGuess);
+
+console.log(userGuess);
+console.log(lastActor.name);
+
+const thisCheck = await workedWithBacon(lastActor.name);
+
+if (thisCheck.includes(userGuess)) {
+  console.log(userGuess, "They share a credit.", lastActor.name);
+} else {console.log("no match")}
+
+
+
+
+
+
+
+
   let actor = await getActorByName(userGuess);
   console.log(actor);
   getImagesById(actor);
@@ -22,14 +39,23 @@ $(".entry-button").on("click", async function () {
   return;
 });
 
+
+
+
+
+
+
+
+
 async function getImagesById(actor) {
+  lastActor = actor;
   const rawImageResults = await fetch(
     `https://api.themoviedb.org/3/person/${actor.id}/images?api_key=${APIKEY}`
   );
 
   const imageResults = await rawImageResults.json();
 
-  console.log(imageResults.profiles[0]);
+  // console.log(imageResults.profiles[0]);
 
   let imagePath = decodeURI(imageResults.profiles[0].file_path);
 
@@ -60,6 +86,7 @@ async function getImagesById(actor) {
   }
 
   $(`.${target}`).append(`<img src="${imageSrc}" class="actor-image">`);
+  $(`.${target}`).append(`<p class="actor-name">${actor.name}</p>`);
 }
 
 function makeKnownList(castList) {
@@ -107,7 +134,7 @@ async function checkCreditId(keyword) {
 
   const whatCreditIsThis = await rawData.json();
 
-  //   console.log("credit_id#", keyword, "is listed as:", whatCreditIsThis);
+  console.log("credit_id#", keyword, "is listed as:", whatCreditIsThis);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -171,9 +198,9 @@ async function getMovieCredits(movieId) {
 
   const movieCredits = await rawMovieCredits.json();
 
-  // console.log(movieCredits.cast);
+  // console.log(movieCredits);
 
-  return movieCredits.cast;
+  return movieCredits;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -283,6 +310,8 @@ async function getCreditById(actor) {
   return creditDetails;
 }
 
+let last
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 async function workedWithBacon(name) {
@@ -302,7 +331,7 @@ async function workedWithBacon(name) {
     let characterList = [];
 
     //find the details of every character in the movie, add it to an array
-    for (const character of movieCharacterList) {
+    for (const character of movieCharacterList.cast) {
       // console.log("We have the character", character, "  - we have their name as", character.name);
 
       if (character.name === actorPrime.name) {
@@ -310,9 +339,16 @@ async function workedWithBacon(name) {
         continue;
       }
 
+      // if (character.name === altBacon) {
+      //   console.log("altBacon fired");
+      //   console.log(firstConnections);
+      //   return firstConnections
+      // }
+
+
       if (character.name === "Kevin Bacon") {
-        console.log("Got him!", character);
-        console.log(movieCharacterList);
+        // console.log("Got him!", character.character);
+        // console.log(credit);
         return true;
       }
 
@@ -397,23 +433,17 @@ async function devBACON(name) {
     // console.log(credit);
 
     const movieCharacterList = await getMovieCredits(credit.id);
-    // console.log(movieCharacterList);
+    // console.log(movieCharacterList.cast);
     let characterList = [];
 
     //find the details of every character in the movie, add it to an array
-    for (const character of movieCharacterList) {
+    for (const character of movieCharacterList.cast) {
       // console.log("We have the character", character, "  - we have their name as", character.name);
 
       if (character.name === actorPrime.name) {
         // console.log("found the actor themselves")
         continue;
       }
-
-      // if (character.name === "Kevin Bacon") {
-      //   console.log("Got him!", character);
-      //   console.log(movieCharacterList);
-      //   return true;
-      // }
 
       if (characterList.includes(character.name)) {
         // console.log("found a repeat")
@@ -438,43 +468,63 @@ const tierONE = devBACON("Kevin Bacon");
 
 console.log(tierONE);
 
-async function devBUILD() {
+async function getStartingActor() {
   const rawPopList = await fetch(
     `https://api.themoviedb.org/3/movie/top_rated?api_key=${APIKEY}&language=en-US&page=2`
   );
-
   const popList = await rawPopList.json();
-
-  console.log(popList.results.length);
-
   let newList = [];
 
   for (const movie of popList.results) {
-    console.log("Beginning scrub on", movie.title), movie;
-
     if (
       movie.genre_ids.includes(
         16 || 10770 || 10402 || 36 || 10751 || 99 || 10749
       )
     ) {
-      console.log(movie.title, "will be filtered");
       continue;
     }
-
     const englishChecker = await getMovieByName(movie.title);
-
     if (englishChecker.original_language === "en") {
-      console.log("Got an english title", movie.title);
-      newList.push(movie.title);
+      newList.push(movie);
     } else {
-      console.log("Got a non english title", movie.title);
       continue;
     }
-
-    console.log(englishChecker);
   }
-  console.log(newList);
-  return;
+  let pickArray = [];
+  for (let i = 0; i < newList.length; i++) {
+    const newCredits = await getMovieCredits(newList[i].id);
+    for (let i = 0; i < 3; i++) {
+      const tempActor = newCredits.cast[i];
+      const tempName = tempActor.name;
+      const testThis = await workedWithBacon(tempName);
+      if (testThis === true) {
+        continue;
+      } else {
+        pickArray.push(tempActor);
+      }
+    }
+  }
+  const finalOutput = pickArray[Math.floor(Math.random() * pickArray.length)];
+  console.log(finalOutput);
+  return finalOutput;
 }
 
-devBUILD();
+// getStartingActor();
+
+let lastActor = {};
+
+$(".begin-button").on("click", beginGame);
+
+
+async function beginGame () {
+  console.log("begin");
+  const starter = await getStartingActor();
+  console.log(starter);
+  count++;
+  let userGuess = starter.name;
+  let actor = await getActorByName(userGuess);
+  console.log(actor);
+  getImagesById(actor);
+
+  return;
+}
