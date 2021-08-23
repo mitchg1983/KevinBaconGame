@@ -9,25 +9,20 @@ let knownToBacon = [];
 let count = 0;
 
 $(".entry-button").on("click", async function () {
-  count++;
   let userGuess = $(".text-box").val();
   console.log("The user has entered", userGuess);
 
-console.log(userGuess);
-console.log(lastActor.name);
+  // console.log(userGuess);
+  // console.log(lastActor.name);
 
-const thisCheck = await workedWithBacon(lastActor.name);
+  const thisCheck = await workedWithBacon(lastActor.name);
 
-if (thisCheck.includes(userGuess)) {
-  console.log(userGuess, "They share a credit.", lastActor.name);
-} else {console.log("no match")}
-
-
-
-
-
-
-
+  if (thisCheck.includes(userGuess)) {
+    console.log(userGuess, "They share a credit.", lastActor.name);
+    count++;
+  } else {
+    return console.log("no match, try again");
+  }
 
   let actor = await getActorByName(userGuess);
   console.log(actor);
@@ -35,17 +30,12 @@ if (thisCheck.includes(userGuess)) {
   let win = await workedWithBacon(userGuess);
   if (win === true) {
     console.log("You won the game!");
+    $(".target-win").append(
+      "<img src='kevin-bacon-01.jpeg' class='bacon'></img>"
+    );
   }
   return;
 });
-
-
-
-
-
-
-
-
 
 async function getImagesById(actor) {
   lastActor = actor;
@@ -85,8 +75,62 @@ async function getImagesById(actor) {
     return console.log("out of guesses");
   }
 
-  $(`.${target}`).append(`<img src="${imageSrc}" class="actor-image">`);
-  $(`.${target}`).append(`<p class="actor-name">${actor.name}</p>`);
+
+
+  $(`.${target}`).append(`
+  <img src="${imageSrc}" class="actor-image">
+  <br>
+  <p class="actor-name">${actor.name}</p>
+  <br>
+  ${actor.known_for[0].title}
+  <br>
+  ${actor.known_for[1].title}
+  <br>
+  ${actor.known_for[2].title}
+  <br>
+  `);
+
+
+  // $(`.${target}`).on("click", clickInfo(actor));
+
+
+
+
+  $(`.${target}`).on("click", async function () {
+
+    console.log("Hello");
+    console.log(lastActor);
+    console.log(target);
+
+    const clicker = await actorById(lastActor.id);
+
+    console.log(clicker.biography);
+
+    // const rawExternalIds = await fetch(
+    // `https://api.themoviedb.org/3/person/${lastActor.id}/external_ids?api_key=${APIKEY}&language=en-US`
+    // );
+  
+    // const externalIds = await rawExternalIds.json();
+
+    // $(".read-box").text(clicker.biography);
+
+
+
+    $(".read-box").html(decodeURI(clicker.biography));
+  
+    // return console.log(externalIds);
+
+
+
+  });
+
+
+}
+
+async function clickInfo (actor) {
+
+  console.log(actor);
+
 }
 
 function makeKnownList(castList) {
@@ -149,6 +193,8 @@ async function actorById(actorId) {
   );
 
   const actorData = await actor.json();
+
+  return actorData;
 
   //   console.log("See below for actor data");
   //   console.log(actorData);
@@ -228,6 +274,7 @@ async function baconFunc1(id) {
 //look through an array of actor's credits
 //returns an array of those credits, with certain genres removed
 async function cleanCredits(creditsArray) {
+  console.log(creditsArray);
   for (const credit of creditsArray) {
     const genreList = credit.genre_ids;
 
@@ -310,7 +357,7 @@ async function getCreditById(actor) {
   return creditDetails;
 }
 
-let last
+let last;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -345,7 +392,6 @@ async function workedWithBacon(name) {
       //   return firstConnections
       // }
 
-
       if (character.name === "Kevin Bacon") {
         // console.log("Got him!", character.character);
         // console.log(credit);
@@ -361,12 +407,15 @@ async function workedWithBacon(name) {
       }
     }
 
+    
+
     for (const actorName of characterList) {
       firstConnections.push(actorName);
+      console.log();
     }
     // console.log(firstConnections);
   }
-  console.log("We have completed the search on", actorPrime.name);
+  // console.log("We have completed the search on", actorPrime.name);
   return firstConnections;
 }
 
@@ -484,6 +533,7 @@ async function getStartingActor() {
       continue;
     }
     const englishChecker = await getMovieByName(movie.title);
+    console.log(movie.title);
     if (englishChecker.original_language === "en") {
       newList.push(movie);
     } else {
@@ -501,6 +551,7 @@ async function getStartingActor() {
         continue;
       } else {
         pickArray.push(tempActor);
+        console.log(tempActor);
       }
     }
   }
@@ -515,8 +566,7 @@ let lastActor = {};
 
 $(".begin-button").on("click", beginGame);
 
-
-async function beginGame () {
+async function beginGame() {
   console.log("begin");
   const starter = await getStartingActor();
   console.log(starter);
