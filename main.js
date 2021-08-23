@@ -88,7 +88,9 @@ async function entryClick () {
       "<img src='kevin-bacon-01.jpeg' class='bacon'></img>"
     );
   }
-  return;
+
+  if (count < 7) {
+  return} else {return console.log("You lose.")}
 
 }
 
@@ -210,10 +212,17 @@ async function workedWithBacon(name) {
       //kicks off the win condition for the program
       if (character.name === "Kevin Bacon") {
         console.log(credit);
+
+        if (count >= 2) {
+
         $(".read-box").text(credit.title + " : " + credit.overview);
         const newSrc = `https://image.tmdb.org/t/p/w342${credit.poster_path}`;
         console.log(newSrc);
         $(".poster-place").append(`<img src='${newSrc}' class='bacon-winner'>`);
+
+        }
+
+
         return true;
       }
       if (characterList.includes(character.name)) {
@@ -445,6 +454,7 @@ async function getActorByName(actorName) {
       "&page=1&include_adult=false"
   );
   const actorResults = await rawActorResults.json();
+  console.log (actorResults);
   return actorResults.results[0];
 }
 
