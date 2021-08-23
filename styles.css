@@ -1,6 +1,5 @@
 body {
     box-sizing: border-box;
-    
     background-color: black;
 }
 
@@ -12,7 +11,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin: 50px;
+
     
 }
 
@@ -71,8 +70,6 @@ body {
     width: 200px;
     transition: 1.5s;
     background-color: rgb(218, 192, 145);
-
-
 }
 
 .aa {
@@ -143,4 +140,26 @@ body {
 
 .bacon-winner {
     width: 80px;
+}
+
+@media screen and (max-width: 880px) {
+
+    .big-panel {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        background-color: rgb(218, 192, 145);
+        font-size: small;
+    }
+
+    .bot-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
 }

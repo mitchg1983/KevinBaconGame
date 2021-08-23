@@ -235,9 +235,6 @@ async function workedWithBacon(name) {
 async function baconBoo(actorName) {
   const baconFriend = await workedWithBacon(actorName);
 
-
-
-
     for (const actorName of baconFriend) {
       const secondConnections = await workedWithBacon(actorName);
       if (secondConnections === true) {
@@ -250,7 +247,6 @@ async function baconBoo(actorName) {
       }
     }
     console.log("Still nothing");
-  // }
 }
 
 async function clickBacon() {
