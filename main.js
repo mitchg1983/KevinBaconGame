@@ -8,6 +8,18 @@ let knownToBacon = [];
 
 let count = 0;
 
+
+async function connector (name) {
+const actorPrime = await getActorByName(name);
+
+const actorCredits = await getActingCredits(actorPrime);
+
+const scrubbedCredits = await scrubCredits(actorCredits.cast);
+
+return scrubbedCredits;
+}
+
+
 $(".entry-button").on("click", async function () {
   let userGuess = $(".text-box").val();
   console.log("The user has entered", userGuess);
@@ -20,6 +32,45 @@ $(".entry-button").on("click", async function () {
   if (thisCheck.includes(userGuess)) {
     console.log(userGuess, "They share a credit.", lastActor.name);
     count++;
+    const connectMe = await connector(userGuess);
+    const connectMeToo = await connector(lastActor.name);
+
+    // console.log(connectMe);
+    // console.log(connectMeToo);
+
+    let alpha = [];
+    let bravo = [];
+
+    for (let i=0; i<connectMe.length; i++) {
+
+      // console.log(connectMe[0]);
+
+      let alphaT = connectMe[i].title;
+      let bravoT = connectMeToo[i].title;
+
+// console.log(alphaT);
+// console.log(bravoT);
+
+alpha.push(alphaT);
+bravo.push(bravoT);
+
+    }
+
+    console.log(alpha);
+    console.log(bravo);
+
+
+    for (const movie of alpha) {
+      if (bravo.includes(movie)){
+
+        console.log(movie);
+
+      }
+    }
+
+
+
+
   } else {
     return console.log("no match, try again");
   }
